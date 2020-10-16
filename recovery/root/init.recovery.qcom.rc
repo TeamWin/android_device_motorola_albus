@@ -15,7 +15,7 @@ on init
     start hwservicemanager
 
 on boot
-    setprop sys.usb.config adb
+    setprop sys.usb.config mtp,adb
     start prepdecrypt
 
 on property:crypto.ready=1
@@ -98,3 +98,16 @@ service keystore_auth /sbin/keystore_auth
     
 on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
     stop sbinqseecomd
+
+    
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/bDeviceClass 0
+    write /sys/class/android_usb/android0/bDeviceSubClass 0
+    write /sys/class/android_usb/android0/bDeviceProtocol 0
+    write /sys/class/android_usb/android0/idVendor 22b8
+    write /sys/class/android_usb/android0/idProduct ${ro.usb.mtp_adb}
+    write /sys/class/android_usb/android0/functions mtp,adb
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state ${sys.usb.config}
