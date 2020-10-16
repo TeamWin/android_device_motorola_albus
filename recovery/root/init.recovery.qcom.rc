@@ -55,11 +55,6 @@ service servicemanager /sbin/servicemanager
     seclabel u:r:recovery:s0
     writepid /dev/cpuset/system-background/tasks
 
-service boot-1-0 /sbin/android.hardware.boot@1.0-service
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
 service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
     user root
     group root
@@ -97,4 +92,5 @@ service keystore_auth /sbin/keystore_auth
     seclabel u:r:recovery:s0
     
 on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
-    stop sbinqseecomd
+    stop sbinqseecomd    
+
